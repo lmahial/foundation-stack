@@ -4,7 +4,7 @@
 **Topic:** Snapshots, three-tree architecture, staging, commits, .gitignore  
 **Session:** 01
 
----
+
 
 ## The Big Picture
 
@@ -12,7 +12,7 @@
 
 **Why it matters:** Every infrastructure repo — configs, scripts, Terraform, Ansible — lives in Git. Without it, you have no history, no way to recover from a bad change, no way to collaborate, and no audit trail. In production, "what changed and when" is the first question after any incident. Git is how you answer it.
 
----
+
 
 ## The Concept
 
@@ -73,7 +73,7 @@ touch session-logs/.gitkeep
 git add session-logs/.gitkeep
 ```
 
----
+
 
 ## Drills
 
@@ -96,7 +96,7 @@ ref: refs/heads/main
 
 **What this taught me:** HEAD points to the current branch — in this case main. On a fresh repo with no commits, main doesn't exist yet as a real branch. HEAD is pointing to a reference that hasn't been created. The branch becomes real the moment the first commit is made.
 
----
+
 
 ### Drill 2 — Stage and Commit
 
@@ -132,7 +132,7 @@ Changes to be committed:
 
 **What this taught me:** The first status shows README.md is in the working directory but Git isn't tracking it. After `git add`, it moves to the staging area — Git now knows it exists and has it queued for the next commit. The shell prompt indicators showed this too: `?1` for untracked, `+1` for staged.
 
----
+
 
 ### Drill 3 — Break It
 
@@ -169,7 +169,7 @@ nothing to commit, working tree clean
 
 **What this taught me:** `.env` and the logs directory are now permanently excluded from tracking. The reason `.env`specifically belongs in `.gitignore` and not just left unstaged: if it's ever staged and committed even once, the credential is in the permanent history. Removing the file doesn't fix it. `.gitignore` prevents the accident before it can happen.
 
----
+
 
 ### Drill 4 — Modify
 
@@ -192,7 +192,7 @@ effdd24 docs(readme): initial commit — add README
 
 **What this taught me:** Commit messages exist for the person reading the log six months from now — including yourself. `"update README"` tells you nothing without opening the diff. `"chore(readme): add description to readme"` tells you the type of change, the scope, and what happened. The log becomes readable history rather than noise.
 
----
+
 
 ### Drill 5 — Extend
 
@@ -210,7 +210,7 @@ git log --oneline
 
 **What this taught me:** `.venv/` is auto-generated and can be hundreds of MB. `.DS_Store` is macOS metadata with no value to anyone else. Both are the category of file that causes noise and risk if committed — generated automatically, never meaningful to the repo's purpose.
 
----
+
 
 ## Lab
 
@@ -257,7 +257,7 @@ b1c0af2 docs(readme): initial commit — add README
 
 **What I'd do differently in production:** A shared team repo would have branch protection on main from day one. Nothing goes directly to main — all changes via pull request, even for solo work. Builds the habit before it's required.
 
----
+
 
 ## Where People Go Wrong
 
@@ -265,7 +265,7 @@ b1c0af2 docs(readme): initial commit — add README
 - **Ignoring specific filenames instead of patterns:** Writing `logs/system.log` instead of `logs/` means the next log file that lands there is untracked again. Ignore directories and extensions, not individual filenames.
 - **Treating commit messages as notes to yourself right now:** Messages like `"update README"` or `"fix stuff"` are useless in a log with 200 entries. Write for the engineer doing the post-incident review — or yourself six months from now at 11pm trying to figure out what changed.
 
----
+
 
 ## Key Takeaways
 
@@ -274,7 +274,7 @@ b1c0af2 docs(readme): initial commit — add README
 - `HEAD` answers "where am I" — not "is anything pending." It points to the current branch, nothing more.
 - `.gitignore` prevents accidents before they happen. Credentials in history are a crisis, not a mistake you can quietly undo.
 
----
+
 
 ## Senior Engineer Notes
 
@@ -282,11 +282,11 @@ b1c0af2 docs(readme): initial commit — add README
 - `git status` before every commit. Experienced engineers don't skip this. It takes two seconds and catches the class of mistake that takes twenty minutes to undo.
 - Commit messages are written for the post-incident review, not for right now. `type(scope): what happened` in one line. Future you will either thank you or curse you — the message is the difference.
 
----
+
 
 ## Retain & Reinforce
 
 - **Explain it:** Without looking at your notes, describe the three-tree architecture in two sentences as if you're onboarding a junior teammate. Write it down or say it out loud. If you stumble, that's what to review.
 - **Read:** [Git - Recording Changes to the Repository](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository) — the official Pro Git book, chapter on staging and committing. Different angle than what we covered, same concepts.
 
----
+

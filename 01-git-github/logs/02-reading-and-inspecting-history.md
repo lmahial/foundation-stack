@@ -4,7 +4,7 @@
 **Topic:** `git log`,`git log --oneline`, `git diff`,`git diff --staged` `HEAD~N`
 **Session:** 02
 
----
+
 
 ## The Big Picture
 
@@ -12,7 +12,7 @@
 
 **Why it matters:** In cloud ops and DevOps, you will regularly inherit repos mid-project. The ability to read history and diff state is the difference between spending five minutes understanding a codebase and spending an hour guessing. In production, when something breaks after a deploy, git history is your first forensic tool.
 
----
+
 
 ## The Concept
 
@@ -114,7 +114,7 @@ git log -p -5
 # Fastest way to audit recent changes in one pass
 ```
 
----
+
 
 ## Drills
 
@@ -159,7 +159,7 @@ effdd24 docs(readme): initial commit — add README
 
 **What this taught me:** `git log` gives full detail per commit — useful when you need to read the full message or copy a complete hash. `--oneline` is what you actually use daily — fast scan of what happened and when. `--graph` earns its place the moment branches diverge or merges happen. On a linear history it's just asterisks, but with multiple branches it draws the convergence visually. The `--all` flag is the important addition — without it, you only see the current branch.
 
----
+
 
 ### Drill 2 — `git diff` with hashes and `HEAD~` notation
 
@@ -176,7 +176,7 @@ git diff HEAD~1 HEAD
 # git diff 747e3c5 8010445
 diff --git a/README.md b/README.md
 index 55916f4..9d0a72b 100644
---- a/README.md
+ a/README.md
 +++ b/README.md
 @@ -3,4 +3,3 @@
  This repository contains hands on drills and command I used to learn git step by step.
@@ -186,7 +186,7 @@ index 55916f4..9d0a72b 100644
 diff --git a/lab2.txt b/lab2.txt
 deleted file mode 100644
 index f62747c..0000000
---- a/lab2.txt
+ a/lab2.txt
 +++ /dev/null
 @@ -1,2 +0,0 @@
 -lab2
@@ -195,7 +195,7 @@ index f62747c..0000000
 # git diff HEAD~1 HEAD
 diff --git a/lab2.txt b/lab2.txt
 index f62747c..5721d27 100644
---- a/lab2.txt
+ a/lab2.txt
 +++ b/lab2.txt
 @@ -1,2 +1 @@
  lab2
@@ -204,7 +204,7 @@ index f62747c..5721d27 100644
 
 **What this taught me:** `HEAD~1` means one commit behind current HEAD — relative navigation without needing to copy hashes. The `~` notation is more practical for quick lookbacks: `HEAD~3` means three commits back from wherever I am now. Hash notation is better when comparing two specific non-adjacent points. Both produce identical output when pointing to the same commits.
 
----
+
 
 ### Drill 3 — `git diff` vs `git diff --staged`
 
@@ -224,7 +224,7 @@ git diff --staged
 # git diff (before staging)
 diff --git a/lab2.txt b/lab2.txt
 index 5721d27..931cba2 100644
---- a/lab2.txt
+ a/lab2.txt
 +++ b/lab2.txt
 @@ -1 +1,2 @@
  lab2
@@ -235,7 +235,7 @@ index 5721d27..931cba2 100644
 # git diff --staged
 diff --git a/lab2.txt b/lab2.txt
 index 5721d27..931cba2 100644
---- a/lab2.txt
+ a/lab2.txt
 +++ b/lab2.txt
 @@ -1 +1,2 @@
  lab2
@@ -244,7 +244,7 @@ index 5721d27..931cba2 100644
 
 **What this taught me:** `git diff` compares working directory to staging area. After `git add`, those two states match — nothing left to diff, so output is empty. That's correct behavior, not a bug. `git diff --staged` then compares staging area to the last commit, which is where the change now lives. The two commands answer different questions: "what haven't I staged yet" vs "what's about to go into my commit."
 
----
+
 
 ### Drill 4 — `--decorate` and ref labels
 
@@ -267,7 +267,7 @@ git log --oneline --graph --all --decorate
 
 **What this taught me:** `--decorate` adds the ref labels in parentheses — `HEAD -> main` tells me where HEAD is pointing and which branch it's on. Without a remote, there's no `origin/main` label. Once pushed, I'd see `(HEAD -> main, origin/main)` when in sync, or `origin/main` on an older commit when my local branch is ahead. That label placement is how you read sync state at a glance without running `git status` or `git fetch`.
 
----
+
 
 ## Lab
 
@@ -316,7 +316,7 @@ Safe to work from — no in-progress merges, no untracked surprises.
 
 **What I'd do differently in production:** Use `git log -p -5` as the first pass — one command gives full commit messages and diffs together, faster than running multiple diff comparisons manually. Then use targeted `git show <hash>` to drill into any specific commit that needs closer inspection.
 
----
+
 
 ## Key Takeaways
 
@@ -326,7 +326,7 @@ Safe to work from — no in-progress merges, no untracked surprises.
 - `git log -p -5` is the audit command: last N commits with full diffs inline, one pass. Faster than running log then diff separately.
 - `--decorate` surfaces ref labels. The useful signal is when `origin/main` and `main` appear on different commits — immediate visual confirmation of sync state without running `git status`.
 
----
+
 
 ## Where People Go Wrong
 
@@ -334,7 +334,7 @@ Safe to work from — no in-progress merges, no untracked surprises.
 - **Trusting a zero diff without checking the log:** A net diff of zero between two commits can mean nothing changed, or it can mean a change and its revert cancel out. The log tells you which. The diff can't.
 - **Using `git log` without `--all` on multi-branch repos:** Without `--all`, you only see the current branch. Other branches and remote tracking refs are invisible. `git log - oneline --graph --all --decorate` is the complete view.
 
----
+
 
 ## Senior Engineer Notes
 
@@ -342,7 +342,7 @@ Safe to work from — no in-progress merges, no untracked surprises.
 - `git show <hash>` is the fastest way to inspect a single commit — message and diff in one output. Learn to reach for it before running a manual diff between two hashes.
 - `git log -p --follow --<filename>` traces the full history of a single file, including across renames. That's the move when you need to know every change ever made to one specific file.
 
----
+
 
 ## Retain & Reinforce
 

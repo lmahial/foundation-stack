@@ -4,7 +4,7 @@
 **Topic:** `git restore`, `git restore --staged`, `git reset` (soft/mixed/hard), `git revert`, `git stash` 
 **Session:** 03
 
----
+
 
 ## The Big Picture
 
@@ -12,7 +12,7 @@
 
 **Why it matters:** Bad commits happen. Staged changes get assembled wrong. Work needs to be shelved mid-task. In a team environment, using the wrong undo tool on shared history causes conflicts for everyone who's already pulled. The cost of picking the wrong tool isn't just personal — it breaks other people's workflows.
 
----
+
 
 ## The Concept
 
@@ -102,14 +102,14 @@ git stash pop                      # restore the most recent stash and drop it f
 **The deciding rule:**
 
 |Situation|Tool|
-|---|---|
+|||
 |Unstaged change you don't want|`git restore <file>`|
 |Staged change you want to unstage|`git restore --staged <file>`|
 |Local commits not yet pushed|`git reset`|
 |Commits already pushed to shared branch|`git revert`|
 |Work in progress — need to switch context|`git stash push -m "description"`|
 
----
+
 
 ## Drills
 
@@ -142,7 +142,7 @@ nothing added to commit but untracked files present
 
 **What this taught me:** `git restore` permanently removes the unstaged change. No recovery path — it never entered the commit graph so reflog can't help. The only safety check before running it is `git diff` to confirm exactly what you're about to lose.
 
----
+
 
 ### Drill 2 — `git restore --staged`: unstage without losing work
 
@@ -170,7 +170,7 @@ Changes not staged for commit:
 
 **What this taught me:** `git restore --staged` only moves the file back out of the staging area. The change stays in the working directory — visible in `git diff`, not lost. This is always safe. The difference from plain `git restore`: one preserves the change, one destroys it.
 
----
+
 
 ### Drill 3 — `git reset --soft`: uncommit but keep staged
 
@@ -205,7 +205,7 @@ Changes to be committed:
 
 **What this taught me:** `--soft` unwraps the commits but leaves everything staged — like the commits were undone but the work is still packed and ready. Running `git commit` immediately after would create a single clean commit from both changes. This is the move when you've made several messy commits locally and want to squash them into one before pushing.
 
----
+
 
 ### Drill 4 — `git reset --mixed`: uncommit and unstage
 
@@ -242,7 +242,7 @@ Changes not staged for commit:
 
 **What this taught me:** `--mixed` moves HEAD back and drops the changes to the working directory — unstaged but not lost. One step more destructive than `--soft`: the changes are no longer staged, so you have to re-examine and re-add deliberately. Use it when you want to split one commit into multiple focused commits.
 
----
+
 
 ### Drill 5 — `git reset --hard`: uncommit and wipe
 
@@ -280,7 +280,7 @@ nothing to commit, working tree clean
 
 **What this taught me:** `--hard` wipes the commit, the staging area, and the working directory change in one move. Clean status, nothing in diff, nothing in `git diff --staged`. The commit can be recovered via reflog (the hash still exists for ~90 days), but any unstaged working directory changes that weren't committed are unrecoverable. Never use `--hard` on a pushed branch.
 
----
+
 
 ### Drill 6 — `git revert`: safe undo on shared history
 
@@ -310,7 +310,7 @@ cat README.md
 
 **What this taught me:** `revert` adds a new commit — the original stays in the log. Both the mistake and the fix are recorded. `reset` removes commits from history; `revert` only adds to it. That's the property that makes it safe on shared branches. If you `reset` on a pushed branch, you rewrite history everyone else already has locally — their next push will conflict. `revert` never causes that.
 
----
+
 
 ### Drill 7 — `git stash`: shelve work in progress
 
@@ -345,7 +345,7 @@ Changes not staged for commit:
 
 **What this taught me:** Stash cleans the working tree without committing — the change goes onto a stack and the tree looks clean to Git. `stash pop` restores it exactly. The problem stash solves: you're mid-feature and need to switch branches or investigate a bug without committing half-finished work. Committing just to switch context pollutes the history with WIP commits that then need to be cleaned up.
 
----
+
 
 ## Lab
 
@@ -412,7 +412,7 @@ Changes not staged for commit:
 
 **What I'd do differently in production:** Use `git add -p` from the start when a file has multiple unrelated changes that need to go into separate commits. Staging whole files when hunks need to be split is a habit that creates messy history.
 
----
+
 
 ## Key Takeaways
 
@@ -422,7 +422,7 @@ Changes not staged for commit:
 - `revert` is the only correct undo on pushed/shared history. It extends the log forward. `reset` rewrites history — on a shared branch, that breaks everyone who's already pulled.
 - `git stash push -m "description"` over plain `git stash` any time you might have more than one stashed context. Anonymous stashes become unreadable fast.
 
----
+
 
 ## Where People Go Wrong
 
@@ -430,7 +430,7 @@ Changes not staged for commit:
 - **Running `git restore` without checking `git diff` first:** No confirmation prompt, no undo. The file reverts instantly. Always know what you're about to destroy before you destroy it.
 - **Plain `git stash` with multiple contexts:** `git stash list` shows `stash@{0}`, `stash@{1}`, `stash@{2}` with no descriptions. You're guessing which is which. Named stashes cost two extra words and save real confusion.
 
----
+
 
 ## Senior Engineer Notes
 
@@ -438,7 +438,7 @@ Changes not staged for commit:
 - `git add -p` is the granular staging tool — it opens an interactive hunk selector so you can stage part of a file's changes and leave the rest unstaged. Essential when one file has two unrelated changes that belong in separate commits.
 - If you `reset --hard` and immediately regret it, run `git reflog` — the commit hash is still there for ~90 days. You can `git reset --hard <hash>` back to it. The window exists; don't rely on it, but know it's there.
 
----
+
 
 ## Retain-Reinforce
 

@@ -1,7 +1,7 @@
 # Undoing Changes
 
-**Skill area:** Git 
-**Topic:** `git restore`, `git restore --staged`, `git reset` (soft/mixed/hard), `git revert`, `git stash` 
+**Skill area:** Git
+**Topic:** `git restore`, `git restore --staged`, `git reset` (soft/mixed/hard), `git revert`, `git stash`
 **Session:** 03
 
 

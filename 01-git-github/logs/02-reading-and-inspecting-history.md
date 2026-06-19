@@ -1,6 +1,6 @@
 # Reading and Inspecting History
 
-**Skill area:** Git 
+**Skill area:** Git
 **Topic:** `git log`,`git log --oneline`, `git diff`,`git diff --staged` `HEAD~N`
 **Session:** 02
 
